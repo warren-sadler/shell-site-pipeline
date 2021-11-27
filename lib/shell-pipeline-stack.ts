@@ -40,7 +40,8 @@ export class ShellPipelineStack extends cdk.Stack {
         buildImage: LinuxBuildImage.AMAZON_LINUX_2_2,
       },
     });
-    const shellSiteProject = new PipelineProject(this, "ShelliSiteProject", {
+    const shellSiteProject = new PipelineProject(this, "ShellSiteProject", {
+      buildSpec: BuildSpec.fromSourceFilename("build-spec.yaml"),
       environment: {
         buildImage: LinuxBuildImage.AMAZON_LINUX_2_2,
       },
