@@ -1,17 +1,11 @@
 // import { Template } from '@aws-cdk/assertions';
-// import * as cdk from '@aws-cdk/core';
-// import * as ShellPipeline from '../lib/shell-pipeline-stack';
+import { expect as expectCDK, haveResourceLike } from "@aws-cdk/assert";
+import * as cdk from "@aws-cdk/core";
+import { ShellPipelineStack } from "../lib/stacks/shell-pipeline-stack";
 
-// example test. To run these tests, uncomment this file along with the
-// example resource in lib/shell-pipeline-stack.ts
-test('SQS Queue Created', () => {
-//   const app = new cdk.App();
-//     // WHEN
-//   const stack = new ShellPipeline.ShellPipelineStack(app, 'MyTestStack');
-//     // THEN
-//   const template = Template.fromStack(stack);
+const app = new cdk.App();
+new ShellPipelineStack(app, "ShellPipeline");
 
-//   template.hasResourceProperties('AWS::SQS::Queue', {
-//     VisibilityTimeout: 300
-//   });
+test("it has a code pipeline", () => {
+  expectCDK(app).to(haveResourceLike("AWS::CodePipeline::Pipeline", {}));
 });

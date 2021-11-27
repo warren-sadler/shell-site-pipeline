@@ -1,7 +1,7 @@
 import { CfnBudget } from "@aws-cdk/aws-budgets";
 import { Construct } from "@aws-cdk/core";
 
-interface BudgetProps {
+export interface BudgetProps {
   budgetName: string;
   budgetLimit: number;
   subscriberEmails: string[];
