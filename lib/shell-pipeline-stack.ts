@@ -7,6 +7,7 @@ import {
   LinuxBuildImage,
 } from "@aws-cdk/aws-codebuild";
 import {
+  CloudFormationCreateReplaceChangeSetAction,
   CloudFormationCreateUpdateStackAction,
   CodeBuildAction,
   GitHubSourceAction,
@@ -105,7 +106,7 @@ export class ShellPipelineStack extends cdk.Stack {
       actions: [
         new CloudFormationCreateUpdateStackAction({
           actionName: "UpdatePipeline",
-          stackName: "ShellSitePipeline",
+          stackName: "ShellPipelineStack",
           templatePath: codepipelineBuildArtifact.atPath(
             "ShellPipelineStack.template.json"
           ),
