@@ -51,7 +51,7 @@ export class ShellPipelineStack extends cdk.Stack {
       stageName: "BuildPipeline",
       actions: [
         new CodeBuildAction({
-          actionName: "BuildPipeline",
+          actionName: "CDKBuild",
           input: pipelineSourceArtifact,
           outputs: [codepipelineBuildArtifact],
           project,
