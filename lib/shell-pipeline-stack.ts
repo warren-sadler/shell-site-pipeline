@@ -1,4 +1,4 @@
-import * as path from "path";
+import * as s3 from "@aws-cdk/aws-s3";
 import * as cdk from "@aws-cdk/core";
 import { Pipeline, Artifact } from "@aws-cdk/aws-codepipeline";
 import {
@@ -11,6 +11,7 @@ import {
   CodeBuildAction,
   GitHubSourceAction,
   GitHubTrigger,
+  S3DeployAction,
 } from "@aws-cdk/aws-codepipeline-actions";
 
 export class ShellPipelineStack extends cdk.Stack {
@@ -18,16 +19,29 @@ export class ShellPipelineStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
     const pipelineSourceArtifact = new Artifact();
+    const shellSiteSourceArtifact = new Artifact();
     const codepipelineBuildArtifact = new Artifact();
+    const shellSiteBuildArtifact = new Artifact();
+    const shellSiteBucket = new s3.Bucket(this, "shell-site-bucket", {
+      publicReadAccess: true,
+      websiteIndexDocument: "index.html",
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
     this.pipeline = new Pipeline(this, "ShellPipeline", {
       pipelineName: "ShellSitePipeline",
       crossAccountKeys: false,
       restartExecutionOnUpdate: true,
     });
-    const project = new PipelineProject(this, "ShellPipelineProject", {
+    const pipelineProject = new PipelineProject(this, "ShellPipelineProject", {
       buildSpec: BuildSpec.fromSourceFilename(
         "build-specs/shell-site-pipeline.build-spec.yaml"
       ),
+      environment: {
+        buildImage: LinuxBuildImage.AMAZON_LINUX_2_2,
+      },
+    });
+    const shellSiteProject = new PipelineProject(this, "ShelliSiteProject", {
+      buildSpec: BuildSpec.fromSourceFilename("build-spec.yaml"),
       environment: {
         buildImage: LinuxBuildImage.AMAZON_LINUX_2_2,
       },
@@ -46,6 +60,17 @@ export class ShellPipelineStack extends cdk.Stack {
           output: pipelineSourceArtifact,
           trigger: GitHubTrigger.WEBHOOK,
         }),
+        new GitHubSourceAction({
+          actionName: "Shell Site",
+          branch: "main",
+          owner: "warren-sadler",
+          repo: "shell-site",
+          oauthToken: cdk.SecretValue.secretsManager(
+            "shell-pipeline-access-token"
+          ),
+          output: shellSiteSourceArtifact,
+          trigger: GitHubTrigger.WEBHOOK,
+        }),
       ],
     });
     this.pipeline.addStage({
@@ -55,7 +80,23 @@ export class ShellPipelineStack extends cdk.Stack {
           actionName: "CDKBuild",
           input: pipelineSourceArtifact,
           outputs: [codepipelineBuildArtifact],
-          project,
+          project: pipelineProject,
+        }),
+        new CodeBuildAction({
+          actionName: "ShellSiteBuild",
+          input: shellSiteSourceArtifact,
+          outputs: [shellSiteBuildArtifact],
+          project: shellSiteProject,
+        }),
+      ],
+    });
+    this.pipeline.addStage({
+      stageName: "DeployShellSite",
+      actions: [
+        new S3DeployAction({
+          actionName: "DeployShellSite",
+          input: shellSiteBuildArtifact,
+          bucket: shellSiteBucket,
         }),
       ],
     });
