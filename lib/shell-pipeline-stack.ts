@@ -41,7 +41,6 @@ export class ShellPipelineStack extends cdk.Stack {
       },
     });
     const shellSiteProject = new PipelineProject(this, "ShelliSiteProject", {
-      buildSpec: BuildSpec.fromSourceFilename("build-spec.yaml"),
       environment: {
         buildImage: LinuxBuildImage.AMAZON_LINUX_2_2,
       },
@@ -61,7 +60,7 @@ export class ShellPipelineStack extends cdk.Stack {
           trigger: GitHubTrigger.WEBHOOK,
         }),
         new GitHubSourceAction({
-          actionName: "Shell Site",
+          actionName: "SourceShellSite",
           branch: "main",
           owner: "warren-sadler",
           repo: "shell-site",
