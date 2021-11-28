@@ -15,7 +15,6 @@ import {
   GitHubTrigger,
   S3DeployAction,
 } from "@aws-cdk/aws-codepipeline-actions";
-import { PolicyStatement } from "@aws-cdk/aws-iam";
 
 export class ShellPipelineStack extends cdk.Stack {
   pipeline: Pipeline;
@@ -39,27 +38,15 @@ export class ShellPipelineStack extends cdk.Stack {
       recordName: "test-deployment",
       domainName: shellSiteBucket.bucketWebsiteDomainName,
     });
-    const buildRole = new iam.Role(this, "build-role", {
-      assumedBy: new iam.ServicePrincipal("codebuild.amazonaws.com"),
-    });
-    buildRole.addToPolicy(
-      new PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ["*"],
-        resources: ["*"],
-      })
-    );
     this.pipeline = new Pipeline(this, "ShellPipeline", {
       pipelineName: "ShellSitePipeline",
       crossAccountKeys: false,
       restartExecutionOnUpdate: true,
-      role: buildRole,
     });
     const pipelineProject = new PipelineProject(this, "ShellPipelineProject", {
       buildSpec: BuildSpec.fromSourceFilename(
         "build-specs/shell-site-pipeline.build-spec.yaml"
       ),
-      role: this.pipeline.role,
       environment: {
         buildImage: LinuxBuildImage.AMAZON_LINUX_2_2,
       },
