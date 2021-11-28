@@ -26,6 +26,7 @@ export class ShellPipelineStack extends cdk.Stack {
     const codepipelineBuildArtifact = new Artifact();
     const shellSiteBuildArtifact = new Artifact();
     const shellSiteBucket = new s3.Bucket(this, "shell-site-bucket", {
+      bucketName: "test-deployment.therify-sandbox.com",
       publicReadAccess: true,
       websiteIndexDocument: "index.html",
       removalPolicy: cdk.RemovalPolicy.DESTROY,
