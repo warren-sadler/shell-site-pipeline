@@ -1,4 +1,5 @@
 import * as s3 from "@aws-cdk/aws-s3";
+import * as route53 from "@aws-cdk/aws-route53";
 import * as cdk from "@aws-cdk/core";
 import { Pipeline, Artifact } from "@aws-cdk/aws-codepipeline";
 import {
@@ -27,6 +28,14 @@ export class ShellPipelineStack extends cdk.Stack {
       publicReadAccess: true,
       websiteIndexDocument: "index.html",
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+    const zone = route53.HostedZone.fromLookup(this, "zone", {
+      domainName: "therify-sandbox.com",
+    });
+    new route53.CnameRecord(this, "cname-record", {
+      zone,
+      recordName: "test-deployment",
+      domainName: shellSiteBucket.bucketWebsiteDomainName,
     });
     this.pipeline = new Pipeline(this, "ShellPipeline", {
       pipelineName: "ShellSitePipeline",
