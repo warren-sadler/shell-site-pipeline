@@ -448,7 +448,7 @@
     "@aws-cdk/custom-resources" "1.134.0"
     constructs "^3.3.69"
 
-"@aws-cdk/aws-iam@1.134.0":
+"@aws-cdk/aws-iam@1.134.0", "@aws-cdk/aws-iam@^1.134.0":
   version "1.134.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-iam/-/aws-iam-1.134.0.tgz#53a45dd0fd3c1327952dd10209c95a5e8366488d"
   integrity sha512-EZy+oyIiAl2WvAfKpn2zhSZ9Wtcu06RUTIbkrourietnQoQhqhiwpp/H84VosgUgwpHsx7BNmZ8EJJXJXs7XfA==
