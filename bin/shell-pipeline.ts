@@ -10,4 +10,9 @@ new BillingStack(app, "BillingStack", {
   budgetLimit: 5,
   subscriberEmails: ["warren@therify.co"],
 });
-new ShellPipelineStack(app, "ShellPipelineStack", {});
+new ShellPipelineStack(app, "ShellPipelineStack", {
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
+  },
+});
