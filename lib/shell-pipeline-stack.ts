@@ -1,7 +1,9 @@
 import * as s3 from "@aws-cdk/aws-s3";
-import * as iam from "@aws-cdk/aws-iam";
 import * as route53 from "@aws-cdk/aws-route53";
 import * as cdk from "@aws-cdk/core";
+import * as acm from "@aws-cdk/aws-certificatemanager";
+import * as origin from "@aws-cdk/aws-cloudfront-origins";
+import * as cloudfront from "@aws-cdk/aws-cloudfront";
 import { Pipeline, Artifact } from "@aws-cdk/aws-codepipeline";
 import {
   BuildSpec,
@@ -32,6 +34,17 @@ export class ShellPipelineStack extends cdk.Stack {
     });
     const zone = route53.HostedZone.fromLookup(this, "zone", {
       domainName: "therify-sandbox.com",
+    });
+    const certificate = new acm.DnsValidatedCertificate(this, "Certificate", {
+      domainName: "test-deployment.therify-sandbox.com",
+      hostedZone: zone,
+    });
+    new cloudfront.Distribution(this, "shell-site-distribution", {
+      defaultBehavior: {
+        origin: new origin.S3Origin(shellSiteBucket),
+      },
+      domainNames: ["test-deployment.therify-sandbox.com"],
+      certificate,
     });
     new route53.CnameRecord(this, "cname-record", {
       zone,

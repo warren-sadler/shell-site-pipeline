@@ -117,7 +117,7 @@
     "@aws-cdk/core" "1.134.0"
     constructs "^3.3.69"
 
-"@aws-cdk/aws-certificatemanager@1.134.0":
+"@aws-cdk/aws-certificatemanager@1.134.0", "@aws-cdk/aws-certificatemanager@^1.134.0":
   version "1.134.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-certificatemanager/-/aws-certificatemanager-1.134.0.tgz#c7d0e1c72220f040f119d6c1c27d17be42d5a3be"
   integrity sha512-Bjx8/7OhtmVQmnLSE9lq/7veakoPe3vy5lNXkABtQRowk0c2G30kWe5mjDhazSCd+RbUWfaTnnS84RcK0vwTKg==
@@ -143,7 +143,19 @@
     "@aws-cdk/cx-api" "1.134.0"
     constructs "^3.3.69"
 
-"@aws-cdk/aws-cloudfront@1.134.0":
+"@aws-cdk/aws-cloudfront-origins@^1.134.0":
+  version "1.134.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cloudfront-origins/-/aws-cloudfront-origins-1.134.0.tgz#8849b7f476b44e71b62e26374b6cff27b1857a4c"
+  integrity sha512-xkqHRvlCZahP3bTPcHgFEhzQW+4EG5H1GK8BwQA3kW+LRT9UHniE/d0Ecg0czH4vo0xghuAS77HCwFCN0tvBew==
+  dependencies:
+    "@aws-cdk/aws-cloudfront" "1.134.0"
+    "@aws-cdk/aws-elasticloadbalancingv2" "1.134.0"
+    "@aws-cdk/aws-iam" "1.134.0"
+    "@aws-cdk/aws-s3" "1.134.0"
+    "@aws-cdk/core" "1.134.0"
+    constructs "^3.3.69"
+
+"@aws-cdk/aws-cloudfront@1.134.0", "@aws-cdk/aws-cloudfront@^1.134.0":
   version "1.134.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cloudfront/-/aws-cloudfront-1.134.0.tgz#e3493c87bd795520e9596c8c80589edb6a484743"
   integrity sha512-N20WzDePC0JJwBSBvja5CjMUFby245743KoKVZ6TneAXPM933G4jCp6jurrZ9S1SSC25KhfBK/pKrNrt+PbMcQ==

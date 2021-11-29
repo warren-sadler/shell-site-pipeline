@@ -23,6 +23,9 @@
   },
   "dependencies": {
     "@aws-cdk/aws-budgets": "^1.134.0",
+    "@aws-cdk/aws-certificatemanager": "^1.134.0",
+    "@aws-cdk/aws-cloudfront": "^1.134.0",
+    "@aws-cdk/aws-cloudfront-origins": "^1.134.0",
     "@aws-cdk/aws-codebuild": "^1.134.0",
     "@aws-cdk/aws-codepipeline": "^1.134.0",
     "@aws-cdk/aws-codepipeline-actions": "^1.134.0",
